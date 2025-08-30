@@ -4,12 +4,15 @@ window.addEventListener('DOMContentLoaded', () => {
     const welcomeScreen = document.getElementById('welcome-screen');
     const signupOptionsScreen = document.getElementById('signup-options-screen');
     const signupEmailFormScreen = document.getElementById('signup-email-form-screen');
+    const loginFormScreen = document.getElementById('login-form-screen');
 
     // Buttons
+    const loginBtn = document.getElementById('login-btn');
     const signupBtn = document.getElementById('signup-btn');
     const backToWelcomeBtn = document.getElementById('back-to-welcome-btn');
     const signupEmailBtn = document.getElementById('signup-email-btn');
     const backToOptionsBtn = document.getElementById('back-to-options-btn');
+    const backToWelcomeFromLoginBtn = document.getElementById('back-to-welcome-from-login-btn');
 
     // --- Initial Splash Screen Logic ---
     // The CSS animation for the splash screen has a 2.5s delay and a 1s duration.
@@ -50,6 +53,22 @@ window.addEventListener('DOMContentLoaded', () => {
         backToOptionsBtn.addEventListener('click', () => {
             signupEmailFormScreen.classList.add('hidden');
             signupOptionsScreen.classList.remove('hidden');
+        });
+    }
+
+    // Welcome -> Login Form
+    if (loginBtn && welcomeScreen && loginFormScreen) {
+        loginBtn.addEventListener('click', () => {
+            welcomeScreen.classList.add('hidden');
+            loginFormScreen.classList.remove('hidden');
+        });
+    }
+
+    // Login Form -> Welcome
+    if (backToWelcomeFromLoginBtn && loginFormScreen && welcomeScreen) {
+        backToWelcomeFromLoginBtn.addEventListener('click', () => {
+            loginFormScreen.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
         });
     }
 
@@ -94,6 +113,49 @@ window.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 formError.textContent = 'Could not connect to the server. Please try again later.';
                 formError.classList.remove('hidden');
+            }
+        });
+    }
+
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            loginError.classList.add('hidden');
+
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            if (!username || !password) {
+                loginError.textContent = 'Username and password are required.';
+                loginError.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:5001/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    loginError.textContent = result.error || 'An unknown error occurred.';
+                    loginError.classList.remove('hidden');
+                } else {
+                    alert(result.message || 'Login successful!');
+                    // In a real app, you would navigate to the home feed.
+                    window.location.reload();
+                }
+            } catch (error) {
+                loginError.textContent = 'Could not connect to the server. Please try again later.';
+                loginError.classList.remove('hidden');
             }
         });
     }

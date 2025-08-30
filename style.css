@@ -121,7 +121,8 @@ h2 {
     text-decoration: underline;
 }
 
-#signup-email-form-screen {
+#signup-email-form-screen,
+#login-form-screen {
     display: flex;
     flex-direction: column;
     justify-content: center;
