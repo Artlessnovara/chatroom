@@ -169,3 +169,198 @@ h2 {
     width: 100%;
     box-sizing: border-box;
 }
+
+/* --- Profile Setup Screen --- */
+#profile-setup-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.profile-photo-uploader {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.profile-photo-uploader .photo-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.profile-photo-uploader .photo-upload-label:hover {
+    background-color: #f0f2f5;
+    border-color: #007bff;
+}
+
+.profile-photo-uploader span {
+    font-size: 3rem;
+}
+
+.profile-photo-uploader p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.profile-photo-uploader input[type="file"] {
+    display: none;
+}
+
+#bio {
+    width: 100%;
+    height: 80px;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.interests-container {
+    width: 100%;
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.interests-container h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.interests-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.interest-tag {
+    background-color: #e9ecef;
+    color: #333;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.interest-tag:hover {
+    background-color: #d8dde2;
+}
+
+.interest-tag.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+/* --- Personalization Screen --- */
+#personalization-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.personalization-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+#personalization-screen p {
+    color: #666;
+    margin-bottom: 2rem;
+    max-width: 300px;
+}
+
+/* --- Onboarding Screen --- */
+#onboarding-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    width: 100%;
+    max-width: 900px;
+    box-sizing: border-box;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.onboarding-cards {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 2rem;
+    text-align: center;
+    width: 220px;
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* --- Home Feed Screen --- */
+#home-feed-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+#home-feed-screen p {
+    font-size: 1.2rem;
+    color: #666;
+}

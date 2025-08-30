@@ -1,162 +1,142 @@
 window.addEventListener('DOMContentLoaded', () => {
-    // Screen elements
-    const splashScreen = document.getElementById('splash-screen');
-    const welcomeScreen = document.getElementById('welcome-screen');
-    const signupOptionsScreen = document.getElementById('signup-options-screen');
-    const signupEmailFormScreen = document.getElementById('signup-email-form-screen');
-    const loginFormScreen = document.getElementById('login-form-screen');
+    // --- Element References ---
+    const screens = {
+        splash: document.getElementById('splash-screen'),
+        welcome: document.getElementById('welcome-screen'),
+        login: document.getElementById('login-form-screen'),
+        signupOptions: document.getElementById('signup-options-screen'),
+        signupForm: document.getElementById('signup-email-form-screen'),
+        profileSetup: document.getElementById('profile-setup-screen'),
+        personalization: document.getElementById('personalization-screen'),
+        onboarding: document.getElementById('onboarding-screen'),
+        homeFeed: document.getElementById('home-feed-screen'),
+    };
 
-    // Buttons
-    const loginBtn = document.getElementById('login-btn');
-    const signupBtn = document.getElementById('signup-btn');
-    const backToWelcomeBtn = document.getElementById('back-to-welcome-btn');
-    const signupEmailBtn = document.getElementById('signup-email-btn');
-    const backToOptionsBtn = document.getElementById('back-to-options-btn');
-    const backToWelcomeFromLoginBtn = document.getElementById('back-to-welcome-from-login-btn');
+    const buttons = {
+        login: document.getElementById('login-btn'),
+        signup: document.getElementById('signup-btn'),
+        backToWelcome: document.getElementById('back-to-welcome-btn'),
+        signupEmail: document.getElementById('signup-email-btn'),
+        backToOptions: document.getElementById('back-to-options-btn'),
+        backFromLogin: document.getElementById('back-to-welcome-from-login-btn'),
+        continueProfile: document.getElementById('continue-profile-setup-btn'),
+        skipProfile: document.getElementById('skip-profile-setup-btn'),
+        syncContacts: document.getElementById('sync-contacts-btn'),
+        skipPersonalization: document.getElementById('skip-personalization-btn'),
+        getStarted: document.getElementById('get-started-btn'),
+    };
 
-    // --- Initial Splash Screen Logic ---
-    // The CSS animation for the splash screen has a 2.5s delay and a 1s duration.
-    if (splashScreen && welcomeScreen) {
-        setTimeout(() => {
-            splashScreen.classList.add('hidden');
-            welcomeScreen.classList.remove('hidden');
-        }, 3500);
-    }
+    const forms = {
+        signup: document.getElementById('signup-form'),
+        login: document.getElementById('login-form'),
+    };
 
-    // --- Navigation Logic ---
-    // Welcome -> Sign Up Options
-    if (signupBtn && welcomeScreen && signupOptionsScreen) {
-        signupBtn.addEventListener('click', () => {
-            welcomeScreen.classList.add('hidden');
-            signupOptionsScreen.classList.remove('hidden');
+    const errorDivs = {
+        signup: document.getElementById('form-error'),
+        login: document.getElementById('login-error'),
+    };
+
+    const interestTags = document.querySelectorAll('.interest-tag');
+
+    // --- Screen Navigation Logic ---
+    const allScreens = Object.values(screens);
+    const showScreen = (screenToShow) => {
+        allScreens.forEach(screen => {
+            if (screen) screen.classList.add('hidden');
         });
-    }
+        if (screenToShow) screenToShow.classList.remove('hidden');
+    };
 
-    // Sign Up Options -> Welcome
-    if (backToWelcomeBtn && signupOptionsScreen && welcomeScreen) {
-        backToWelcomeBtn.addEventListener('click', () => {
-            signupOptionsScreen.classList.add('hidden');
-            welcomeScreen.classList.remove('hidden');
+    // --- Initial Splash Screen ---
+    setTimeout(() => showScreen(screens.welcome), 3500);
+
+    // --- Event Listeners ---
+    buttons.signup?.addEventListener('click', () => showScreen(screens.signupOptions));
+    buttons.login?.addEventListener('click', () => showScreen(screens.login));
+    buttons.backToWelcome?.addEventListener('click', () => showScreen(screens.welcome));
+    buttons.backFromLogin?.addEventListener('click', () => showScreen(screens.welcome));
+    buttons.signupEmail?.addEventListener('click', () => showScreen(screens.signupForm));
+    buttons.backToOptions?.addEventListener('click', () => showScreen(screens.signupOptions));
+
+    // Onboarding Flow
+    buttons.continueProfile?.addEventListener('click', () => showScreen(screens.personalization));
+    buttons.skipProfile?.addEventListener('click', () => showScreen(screens.personalization));
+    buttons.syncContacts?.addEventListener('click', () => showScreen(screens.onboarding));
+    buttons.skipPersonalization?.addEventListener('click', () => showScreen(screens.onboarding));
+    buttons.getStarted?.addEventListener('click', () => showScreen(screens.homeFeed));
+
+    // Interest Tag selection
+    interestTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+            tag.classList.toggle('active');
         });
-    }
+    });
 
-    // Sign Up Options -> Email Form
-    if (signupEmailBtn && signupOptionsScreen && signupEmailFormScreen) {
-        signupEmailBtn.addEventListener('click', () => {
-            signupOptionsScreen.classList.add('hidden');
-            signupEmailFormScreen.classList.remove('hidden');
-        });
-    }
+    // --- Form Submission ---
+    forms.signup?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        errorDivs.signup.classList.add('hidden');
 
-    // Email Form -> Sign Up Options
-    if (backToOptionsBtn && signupEmailFormScreen && signupOptionsScreen) {
-        backToOptionsBtn.addEventListener('click', () => {
-            signupEmailFormScreen.classList.add('hidden');
-            signupOptionsScreen.classList.remove('hidden');
-        });
-    }
+        const fullName = forms.signup.querySelector('#fullname').value;
+        const username = forms.signup.querySelector('#username').value;
+        const password = forms.signup.querySelector('#password').value;
 
-    // Welcome -> Login Form
-    if (loginBtn && welcomeScreen && loginFormScreen) {
-        loginBtn.addEventListener('click', () => {
-            welcomeScreen.classList.add('hidden');
-            loginFormScreen.classList.remove('hidden');
-        });
-    }
+        if (!fullName || !username || !password) {
+            errorDivs.signup.textContent = 'All fields are required.';
+            errorDivs.signup.classList.remove('hidden');
+            return;
+        }
 
-    // Login Form -> Welcome
-    if (backToWelcomeFromLoginBtn && loginFormScreen && welcomeScreen) {
-        backToWelcomeFromLoginBtn.addEventListener('click', () => {
-            loginFormScreen.classList.add('hidden');
-            welcomeScreen.classList.remove('hidden');
-        });
-    }
-
-    // --- Form Submission Logic ---
-    const signupForm = document.getElementById('signup-form');
-    const formError = document.getElementById('form-error');
-
-    if (signupForm) {
-        signupForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            formError.classList.add('hidden'); // Hide error on new submission
-
-            const fullName = document.getElementById('fullname').value;
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (!fullName || !username || !password) {
-                formError.textContent = 'All fields are required.';
-                formError.classList.remove('hidden');
-                return;
+        try {
+            const response = await fetch('http://127.0.0.1:5001/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fullName, username, password }),
+            });
+            const result = await response.json();
+            if (!response.ok) {
+                errorDivs.signup.textContent = result.error || 'An unknown error occurred.';
+                errorDivs.signup.classList.remove('hidden');
+            } else {
+                // Successful registration, start the onboarding flow
+                showScreen(screens.profileSetup);
             }
+        } catch (error) {
+            errorDivs.signup.textContent = 'Could not connect to the server.';
+            errorDivs.signup.classList.remove('hidden');
+        }
+    });
 
-            try {
-                const response = await fetch('http://127.0.0.1:5001/api/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ fullName, username, password }),
-                });
+    forms.login?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        errorDivs.login.classList.add('hidden');
 
-                const result = await response.json();
+        const username = forms.login.querySelector('#login-username').value;
+        const password = forms.login.querySelector('#login-password').value;
 
-                if (!response.ok) {
-                    formError.textContent = result.error || 'An unknown error occurred.';
-                    formError.classList.remove('hidden');
-                } else {
-                    alert('Registration successful! You can now log in.');
-                    // In a real app, you would redirect to the login page or home feed.
-                    window.location.reload(); // Simple way to reset to the start
-                }
-            } catch (error) {
-                formError.textContent = 'Could not connect to the server. Please try again later.';
-                formError.classList.remove('hidden');
+        if (!username || !password) {
+            errorDivs.login.textContent = 'Username and password are required.';
+            errorDivs.login.classList.remove('hidden');
+            return;
+        }
+
+        try {
+            const response = await fetch('http://127.0.0.1:5001/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+            const result = await response.json();
+            if (!response.ok) {
+                errorDivs.login.textContent = result.error || 'An unknown error occurred.';
+                errorDivs.login.classList.remove('hidden');
+            } else {
+                // On successful login, go directly to home feed
+                showScreen(screens.homeFeed);
             }
-        });
-    }
-
-    const loginForm = document.getElementById('login-form');
-    const loginError = document.getElementById('login-error');
-
-    if (loginForm) {
-        loginForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            loginError.classList.add('hidden');
-
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-
-            if (!username || !password) {
-                loginError.textContent = 'Username and password are required.';
-                loginError.classList.remove('hidden');
-                return;
-            }
-
-            try {
-                const response = await fetch('http://127.0.0.1:5001/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ username, password }),
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    loginError.textContent = result.error || 'An unknown error occurred.';
-                    loginError.classList.remove('hidden');
-                } else {
-                    alert(result.message || 'Login successful!');
-                    // In a real app, you would navigate to the home feed.
-                    window.location.reload();
-                }
-            } catch (error) {
-                loginError.textContent = 'Could not connect to the server. Please try again later.';
-                loginError.classList.remove('hidden');
-            }
-        });
-    }
+        } catch (error) {
+            errorDivs.login.textContent = 'Could not connect to the server.';
+            errorDivs.login.classList.remove('hidden');
+        }
+    });
 });

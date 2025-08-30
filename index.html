@@ -60,6 +60,71 @@
         <button id="back-to-options-btn" class="btn-link">Back</button>
     </div>
 
+    <div id="profile-setup-screen" class="hidden">
+        <h2>Set up your profile</h2>
+        <div class="profile-photo-uploader">
+            <label for="photo-upload" class="photo-upload-label">
+                <span>📷</span>
+                <p>Upload Profile Photo</p>
+            </label>
+            <input type="file" id="photo-upload" accept="image/*">
+        </div>
+        <div class="form-group">
+            <textarea id="bio" placeholder="Add a bio (optional)" maxlength="150"></textarea>
+        </div>
+        <div class="interests-container">
+            <h3>Choose your interests:</h3>
+            <div class="interests-tags">
+                <button class="interest-tag">Sports</button>
+                <button class="interest-tag">Music</button>
+                <button class="interest-tag">Tech</button>
+                <button class="interest-tag">Lifestyle</button>
+                <button class="interest-tag">Gaming</button>
+                <button class="interest-tag">Travel</button>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button id="skip-profile-setup-btn" class="btn btn-secondary">Skip</button>
+            <button id="continue-profile-setup-btn" class="btn btn-primary">Continue</button>
+        </div>
+    </div>
+
+    <div id="personalization-screen" class="hidden">
+        <div class="personalization-icon">🤝</div>
+        <h2>Find your friends</h2>
+        <p>Sync your contacts to see who you already know on GLOOBA.</p>
+        <div class="nav-buttons">
+            <button id="skip-personalization-btn" class="btn btn-secondary">Skip for now</button>
+            <button id="sync-contacts-btn" class="btn btn-primary">Sync Contacts</button>
+        </div>
+    </div>
+
+    <div id="onboarding-screen" class="hidden">
+        <div class="onboarding-cards">
+            <div class="card">
+                <div class="card-icon">🌍</div>
+                <h3>Connect with people</h3>
+                <p>Join communities and meet people from all over the world.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎥</div>
+                <h3>Share reels & posts</h3>
+                <p>Showcase your life and creativity through posts and short videos.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🚀</div>
+                <h3>Discover events</h3>
+                <p>Find exciting events and happenings near you.</p>
+            </div>
+        </div>
+        <button id="get-started-btn" class="btn btn-primary">Get Started</button>
+    </div>
+
+    <div id="home-feed-screen" class="hidden">
+        <h1>Welcome to your GLOOBA Feed!</h1>
+        <p>Content will be loaded here soon.</p>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
