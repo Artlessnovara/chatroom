@@ -52,4 +52,49 @@ window.addEventListener('DOMContentLoaded', () => {
             signupOptionsScreen.classList.remove('hidden');
         });
     }
+
+    // --- Form Submission Logic ---
+    const signupForm = document.getElementById('signup-form');
+    const formError = document.getElementById('form-error');
+
+    if (signupForm) {
+        signupForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            formError.classList.add('hidden'); // Hide error on new submission
+
+            const fullName = document.getElementById('fullname').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!fullName || !username || !password) {
+                formError.textContent = 'All fields are required.';
+                formError.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:5001/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ fullName, username, password }),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    formError.textContent = result.error || 'An unknown error occurred.';
+                    formError.classList.remove('hidden');
+                } else {
+                    alert('Registration successful! You can now log in.');
+                    // In a real app, you would redirect to the login page or home feed.
+                    window.location.reload(); // Simple way to reset to the start
+                }
+            } catch (error) {
+                formError.textContent = 'Could not connect to the server. Please try again later.';
+                formError.classList.remove('hidden');
+            }
+        });
+    }
 });
