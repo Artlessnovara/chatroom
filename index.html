@@ -61,32 +61,35 @@
     </div>
 
     <div id="profile-setup-screen" class="hidden">
-        <h2>Set up your profile</h2>
-        <div class="profile-photo-uploader">
-            <label for="photo-upload" class="photo-upload-label">
-                <span>📷</span>
-                <p>Upload Profile Photo</p>
-            </label>
-            <input type="file" id="photo-upload" accept="image/*">
-        </div>
-        <div class="form-group">
-            <textarea id="bio" placeholder="Add a bio (optional)" maxlength="150"></textarea>
-        </div>
-        <div class="interests-container">
-            <h3>Choose your interests:</h3>
-            <div class="interests-tags">
-                <button class="interest-tag">Sports</button>
-                <button class="interest-tag">Music</button>
-                <button class="interest-tag">Tech</button>
-                <button class="interest-tag">Lifestyle</button>
-                <button class="interest-tag">Gaming</button>
-                <button class="interest-tag">Travel</button>
+        <form id="profile-setup-form">
+            <h2>Set up your profile</h2>
+            <div id="profile-error" class="error-message hidden"></div>
+            <div class="profile-photo-uploader">
+                <label for="photo-upload" class="photo-upload-label">
+                    <span>📷</span>
+                    <p>Upload Profile Photo</p>
+                </label>
+                <input type="file" id="photo-upload" name="profilePhoto" accept="image/*">
             </div>
-        </div>
-        <div class="nav-buttons">
-            <button id="skip-profile-setup-btn" class="btn btn-secondary">Skip</button>
-            <button id="continue-profile-setup-btn" class="btn btn-primary">Continue</button>
-        </div>
+            <div class="form-group">
+                <textarea id="bio" name="bio" placeholder="Add a bio (optional)" maxlength="150"></textarea>
+            </div>
+            <div class="interests-container">
+                <h3>Choose your interests:</h3>
+                <div class="interests-tags">
+                    <button type="button" class="interest-tag">Sports</button>
+                    <button type="button" class="interest-tag">Music</button>
+                    <button type="button" class="interest-tag">Tech</button>
+                    <button type="button" class="interest-tag">Lifestyle</button>
+                    <button type="button" class="interest-tag">Gaming</button>
+                    <button type="button" class="interest-tag">Travel</button>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button type="button" id="skip-profile-setup-btn" class="btn btn-secondary">Skip</button>
+                <button type="submit" id="continue-profile-setup-btn" class="btn btn-primary">Continue</button>
+            </div>
+        </form>
     </div>
 
     <div id="personalization-screen" class="hidden">
