@@ -9,17 +9,17 @@ def init_db():
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
 
-        # Drop tables if they exist for a clean slate during development
         cursor.execute("DROP TABLE IF EXISTS user_interests")
         cursor.execute("DROP TABLE IF EXISTS interests")
         cursor.execute("DROP TABLE IF EXISTS users")
 
-        # Create users table with new columns
+        # Create users table with new email column
         cursor.execute('''
         CREATE TABLE users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             full_name TEXT NOT NULL,
             username TEXT NOT NULL UNIQUE,
+            email TEXT NOT NULL UNIQUE,
             password_hash TEXT NOT NULL,
             bio TEXT,
             profile_image_url TEXT,
@@ -27,7 +27,6 @@ def init_db():
         )
         ''')
 
-        # Create interests table
         cursor.execute('''
         CREATE TABLE interests (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,7 +34,6 @@ def init_db():
         )
         ''')
 
-        # Create user_interests join table for many-to-many relationship
         cursor.execute('''
         CREATE TABLE user_interests (
             user_id INTEGER,
@@ -46,12 +44,11 @@ def init_db():
         )
         ''')
 
-        # Populate the interests table with default values
         default_interests = ['Sports', 'Music', 'Tech', 'Lifestyle', 'Gaming', 'Travel']
         cursor.executemany("INSERT INTO interests (name) VALUES (?)", [(i,) for i in default_interests])
 
         conn.commit()
-        print("Database initialized successfully with updated schema.")
+        print("Database initialized successfully with updated schema (email added).")
     except sqlite3.Error as e:
         print(f"Database error: {e}")
     finally:
@@ -59,7 +56,6 @@ def init_db():
             conn.close()
 
 if __name__ == '__main__':
-    # It's good practice to remove the old db file to ensure a fresh start
     if os.path.exists(DB_FILE):
         os.remove(DB_FILE)
         print("Removed old database file.")

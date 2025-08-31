@@ -68,13 +68,26 @@ window.addEventListener('DOMContentLoaded', () => {
         tag.addEventListener('click', () => tag.classList.toggle('active'));
     });
 
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', () => {
+            const passwordInput = button.previousElementSibling;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                button.textContent = '👁';
+            }
+        });
+    });
+
     // --- Form Submission Logic ---
     forms.signup?.addEventListener('submit', async (event) => {
         event.preventDefault();
         errorDivs.signup.classList.add('hidden');
-        const { fullname, username, password } = Object.fromEntries(new FormData(event.target));
+        const { fullname, email, username, password } = Object.fromEntries(new FormData(event.target));
 
-        if (!fullname || !username || !password) {
+        if (!fullname || !email || !username || !password) {
             errorDivs.signup.textContent = 'All fields are required.';
             errorDivs.signup.classList.remove('hidden');
             return;
@@ -84,7 +97,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('http://127.0.0.1:5001/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fullName: fullname, username, password }), // Corrected mapping
+                body: JSON.stringify({ fullName: fullname, email, username, password }),
             });
             const result = await response.json();
             if (!response.ok) {
@@ -135,12 +148,11 @@ window.addEventListener('DOMContentLoaded', () => {
     forms.login?.addEventListener('submit', async (event) => {
         event.preventDefault();
         errorDivs.login.classList.add('hidden');
-        // Corrected to get values from specific login inputs
-        const username = forms.login.querySelector('#login-username').value;
+        const email = forms.login.querySelector('#login-email').value;
         const password = forms.login.querySelector('#login-password').value;
 
-        if (!username || !password) {
-            errorDivs.login.textContent = 'Username and password are required.';
+        if (!email || !password) {
+            errorDivs.login.textContent = 'Email and password are required.';
             errorDivs.login.classList.remove('hidden');
             return;
         }
@@ -149,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('http://127.0.0.1:5001/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ email, password }),
             });
             const result = await response.json();
             if (!response.ok) {

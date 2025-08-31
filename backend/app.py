@@ -36,9 +36,10 @@ def register():
 
     full_name = data.get('fullName')
     username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
-    if not all([full_name, username, password]):
+    if not all([full_name, username, email, password]):
         return jsonify({"error": "Missing required fields"}), 400
 
     password_hash = generate_password_hash(password)
@@ -47,13 +48,13 @@ def register():
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO users (full_name, username, password_hash) VALUES (?, ?, ?)",
-            (full_name, username, password_hash)
+            "INSERT INTO users (full_name, username, email, password_hash) VALUES (?, ?, ?, ?)",
+            (full_name, username, email, password_hash)
         )
         conn.commit()
         user_id = cursor.lastrowid
     except sqlite3.IntegrityError:
-        return jsonify({"error": "Username already exists"}), 409
+        return jsonify({"error": "Username or email already exists"}), 409
     except sqlite3.Error as e:
         return jsonify({"error": f"Database error: {e}"}), 500
     finally:
@@ -122,18 +123,18 @@ def login():
     if not data:
         return jsonify({"error": "Invalid JSON"}), 400
 
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
-    if not all([username, password]):
-        return jsonify({"error": "Missing username or password"}), 400
+    if not all([email, password]):
+        return jsonify({"error": "Missing email or password"}), 400
 
     try:
         conn = sqlite3.connect(DB_FILE)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+        cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
         user = cursor.fetchone()
     except sqlite3.Error as e:
         return jsonify({"error": f"Database error: {e}"}), 500
@@ -144,7 +145,7 @@ def login():
     if user and check_password_hash(user['password_hash'], password):
         return jsonify({"message": f"Welcome back, {user['full_name']}!"}), 200
     else:
-        return jsonify({"error": "Invalid username or password"}), 401
+        return jsonify({"error": "Invalid email or password"}), 401
 
 # --- Main Execution ---
 if __name__ == '__main__':
