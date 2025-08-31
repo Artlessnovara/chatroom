@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GLOOBA</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
 </head>
 <body>
     <div id="splash-screen">
@@ -151,8 +152,53 @@
     </div>
 
     <div id="home-feed-screen" class="hidden">
-        <h1>Welcome to your GLOOBA Feed!</h1>
-        <p>Content will be loaded here soon.</p>
+        <!-- Top Bar (Header Row) -->
+        <header class="top-bar">
+            <div class="logo">GLOOBA</div>
+            <div class="top-bar-icons">
+                <i class="fas fa-search"></i>
+                <i class="fas fa-comment-dots"></i>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <h1>Welcome to your GLOOBA Feed!</h1>
+            <p>Content will be loaded here soon.</p>
+        </main>
+
+        <!-- Navigation Row (Main Tabs) -->
+        <nav class="navigation-row">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-globe"></i>
+                <span>Discover</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-film"></i>
+                <span>Reels</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-bars"></i>
+                <span>Menu</span>
+            </a>
+        </nav>
+
+        <!-- Floating Action Button (FAB) -->
+        <button class="fab">
+            <i class="fas fa-plus"></i>
+        </button>
     </div>
 
     <script src="script.js"></script>
