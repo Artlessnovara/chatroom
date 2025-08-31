@@ -1,12 +1,51 @@
+/* --- CSS Variables for Theming --- */
+:root {
+    --bg-color: #f0f2f5;
+    --text-color: #333;
+    --text-color-light: #666;
+    --card-bg-color: #ffffff;
+    --primary-color: #007bff;
+    --primary-text-color: #ffffff;
+    --secondary-color: #e9ecef;
+    --secondary-text-color: #333;
+    --link-color: #007bff;
+    --border-color: #ccc;
+    --splash-gradient: linear-gradient(45deg, #6dd5ed, #2193b0);
+    --shadow-color: rgba(0,0,0,0.1);
+    --error-bg-color: #f8d7da;
+    --error-text-color: #721c24;
+    --error-border-color: #f5c6cb;
+}
+
+.dark-theme {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --text-color-light: #999;
+    --card-bg-color: #1e1e1e;
+    --primary-color: #007bff;
+    --primary-text-color: #ffffff;
+    --secondary-color: #333;
+    --secondary-text-color: #e0e0e0;
+    --link-color: #00aaff;
+    --border-color: #444;
+    --splash-gradient: linear-gradient(45deg, #0e2a47, #000000);
+    --shadow-color: rgba(255,255,255,0.1);
+    --error-bg-color: #441c24;
+    --error-text-color: #f8d7da;
+    --error-border-color: #f5c6cb;
+}
+
+
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f0f2f5;
+    background-color: var(--bg-color);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     text-align: center;
+    transition: background-color 0.3s ease;
 }
 
 .hidden {
@@ -19,27 +58,26 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, #6dd5ed, #2193b0);
+    background: var(--splash-gradient);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    color: white;
+    color: var(--primary-text-color);
     animation: fadeOut 1s ease-in-out forwards 2.5s;
 }
 
 @keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-        visibility: hidden;
-    }
+    from { opacity: 1; }
+    to { opacity: 0; visibility: hidden; }
 }
 
-#welcome-screen {
+#welcome-screen,
+#signup-options-screen,
+#personalization-screen,
+#onboarding-screen,
+#home-feed-screen {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -49,12 +87,8 @@ body {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .auth-buttons {
@@ -77,39 +111,30 @@ body {
 }
 
 .btn-primary {
-    background-color: #007bff;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--primary-text-color);
 }
 
 .btn-secondary {
-    background-color: #e9ecef;
-    color: #333;
+    background-color: var(--secondary-color);
+    color: var(--secondary-text-color);
 }
 
 h1 {
     font-size: 2.5rem;
-    color: #333;
+    color: var(--text-color);
 }
 
 h2 {
     font-size: 2rem;
-    color: #333;
+    color: var(--text-color);
     margin-bottom: 1rem;
-}
-
-#signup-options-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    animation: fadeIn 0.5s ease-in-out;
 }
 
 .btn-link {
     background: none;
     border: none;
-    color: #007bff;
+    color: var(--link-color);
     cursor: pointer;
     font-size: 1rem;
     margin-top: 1.5rem;
@@ -122,7 +147,8 @@ h2 {
 }
 
 #signup-email-form-screen,
-#login-form-screen {
+#login-form-screen,
+#profile-setup-screen {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -134,7 +160,21 @@ h2 {
     animation: fadeIn 0.5s ease-in-out;
 }
 
-#signup-form {
+#profile-setup-screen {
+    max-width: 500px;
+}
+
+#personalization-screen {
+    max-width: 450px;
+    text-align: center;
+}
+
+#onboarding-screen {
+    max-width: 900px;
+}
+
+
+#signup-form, #login-form {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -148,10 +188,12 @@ h2 {
 .form-group input {
     width: 100%;
     padding: 0.8rem 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
     box-sizing: border-box;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
 }
 
 .btn-full-width {
@@ -160,9 +202,9 @@ h2 {
 }
 
 .error-message {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+    color: var(--error-text-color);
+    background-color: var(--error-bg-color);
+    border: 1px solid var(--error-border-color);
     border-radius: 8px;
     padding: 0.8rem 1rem;
     margin-bottom: 1rem;
@@ -171,18 +213,6 @@ h2 {
 }
 
 /* --- Profile Setup Screen --- */
-#profile-setup-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    width: 100%;
-    max-width: 500px;
-    box-sizing: border-box;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
 .profile-photo-uploader {
     margin-bottom: 1.5rem;
     text-align: center;
@@ -195,15 +225,15 @@ h2 {
     justify-content: center;
     width: 120px;
     height: 120px;
-    border: 2px dashed #ccc;
+    border: 2px dashed var(--border-color);
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.2s, border-color 0.2s;
 }
 
 .profile-photo-uploader .photo-upload-label:hover {
-    background-color: #f0f2f5;
-    border-color: #007bff;
+    background-color: var(--bg-color);
+    border-color: var(--primary-color);
 }
 
 .profile-photo-uploader span {
@@ -213,7 +243,7 @@ h2 {
 .profile-photo-uploader p {
     margin: 0;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-color-light);
 }
 
 .profile-photo-uploader input[type="file"] {
@@ -224,12 +254,14 @@ h2 {
     width: 100%;
     height: 80px;
     padding: 0.8rem 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
     box-sizing: border-box;
     resize: vertical;
     font-family: inherit;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
 }
 
 .interests-container {
@@ -241,7 +273,7 @@ h2 {
 .interests-container h3 {
     font-size: 1.2rem;
     margin-bottom: 1rem;
-    color: #333;
+    color: var(--text-color);
 }
 
 .interests-tags {
@@ -252,8 +284,8 @@ h2 {
 }
 
 .interest-tag {
-    background-color: #e9ecef;
-    color: #333;
+    background-color: var(--secondary-color);
+    color: var(--secondary-text-color);
     border: 1px solid transparent;
     border-radius: 20px;
     padding: 0.5rem 1rem;
@@ -263,12 +295,12 @@ h2 {
 }
 
 .interest-tag:hover {
-    background-color: #d8dde2;
+    background-color: #d8dde2; /* This could be a variable too */
 }
 
 .interest-tag.active {
-    background-color: #007bff;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--primary-text-color);
     font-weight: bold;
 }
 
@@ -280,43 +312,18 @@ h2 {
 }
 
 /* --- Personalization Screen --- */
-#personalization-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    width: 100%;
-    max-width: 450px;
-    box-sizing: border-box;
-    text-align: center;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
 .personalization-icon {
     font-size: 4rem;
     margin-bottom: 1rem;
 }
 
 #personalization-screen p {
-    color: #666;
+    color: var(--text-color-light);
     margin-bottom: 2rem;
     max-width: 300px;
 }
 
 /* --- Onboarding Screen --- */
-#onboarding-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    width: 100%;
-    max-width: 900px;
-    box-sizing: border-box;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
 .onboarding-cards {
     display: flex;
     justify-content: center;
@@ -325,9 +332,9 @@ h2 {
 }
 
 .card {
-    background-color: white;
+    background-color: var(--card-bg-color);
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px var(--shadow-color);
     padding: 2rem;
     text-align: center;
     width: 220px;
@@ -341,28 +348,19 @@ h2 {
 .card h3 {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
-    color: #333;
+    color: var(--text-color);
 }
 
 .card p {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-color-light);
     line-height: 1.4;
 }
 
 /* --- Home Feed Screen --- */
-#home-feed-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
 #home-feed-screen p {
     font-size: 1.2rem;
-    color: #666;
+    color: var(--text-color-light);
 }
 
 /* --- Enhanced Form Styles --- */
@@ -373,7 +371,7 @@ h2 {
 }
 
 .password-group input {
-    padding-right: 3rem; /* Make space for the button */
+    padding-right: 3rem;
 }
 
 .toggle-password {
@@ -385,7 +383,7 @@ h2 {
     border: none;
     cursor: pointer;
     font-size: 1.2rem;
-    color: #666;
+    color: var(--text-color-light);
     padding: 0.5rem;
 }
 
@@ -402,7 +400,7 @@ h2 {
     display: flex;
     align-items: center;
     font-size: 0.9rem;
-    color: #333;
+    color: var(--text-color);
 }
 
 .remember-me input {
@@ -411,10 +409,66 @@ h2 {
 
 .forgot-password {
     font-size: 0.9rem;
-    color: #007bff;
+    color: var(--link-color);
     text-decoration: none;
 }
 
 .forgot-password:hover {
     text-decoration: underline;
+}
+
+/* --- Theme Preview Screen --- */
+#theme-preview-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+#theme-preview-screen p {
+    color: var(--text-color-light);
+    margin-bottom: 2rem;
+}
+
+.theme-options {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.theme-choice {
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.theme-choice.active {
+    border-color: var(--primary-color);
+}
+
+.theme-choice span {
+    display: block;
+    margin-top: 0.5rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.theme-preview {
+    width: 120px;
+    height: 80px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.theme-preview.light {
+    background-color: #f0f2f5;
+}
+
+.theme-preview.dark {
+    background-color: #121212;
 }

@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
         profileSetup: document.getElementById('profile-setup-screen'),
         personalization: document.getElementById('personalization-screen'),
         onboarding: document.getElementById('onboarding-screen'),
+        themePreview: document.getElementById('theme-preview-screen'),
         homeFeed: document.getElementById('home-feed-screen'),
     };
 
@@ -26,6 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
         syncContacts: document.getElementById('sync-contacts-btn'),
         skipPersonalization: document.getElementById('skip-personalization-btn'),
         getStarted: document.getElementById('get-started-btn'),
+        continueToHome: document.getElementById('continue-to-home-btn'),
     };
 
     const forms = {
@@ -39,6 +41,8 @@ window.addEventListener('DOMContentLoaded', () => {
         login: document.getElementById('login-error'),
         profile: document.getElementById('profile-error'),
     };
+
+    const themeChoices = document.querySelectorAll('.theme-choice');
 
     // --- Screen Navigation Logic ---
     const allScreens = Object.values(screens);
@@ -62,12 +66,15 @@ window.addEventListener('DOMContentLoaded', () => {
     buttons.skipProfile?.addEventListener('click', () => showScreen(screens.personalization));
     buttons.syncContacts?.addEventListener('click', () => showScreen(screens.onboarding));
     buttons.skipPersonalization?.addEventListener('click', () => showScreen(screens.onboarding));
-    buttons.getStarted?.addEventListener('click', () => showScreen(screens.homeFeed));
+    buttons.getStarted?.addEventListener('click', () => showScreen(screens.themePreview)); // Go to Theme Preview
+    buttons.continueToHome?.addEventListener('click', () => showScreen(screens.homeFeed)); // Go to Home
 
+    // Interest Tag selection
     document.querySelectorAll('.interest-tag').forEach(tag => {
         tag.addEventListener('click', () => tag.classList.toggle('active'));
     });
 
+    // Password Toggle
     document.querySelectorAll('.toggle-password').forEach(button => {
         button.addEventListener('click', () => {
             const passwordInput = button.previousElementSibling;
@@ -77,6 +84,19 @@ window.addEventListener('DOMContentLoaded', () => {
             } else {
                 passwordInput.type = 'password';
                 button.textContent = '👁';
+            }
+        });
+    });
+
+    // Theme Selection
+    themeChoices.forEach(choice => {
+        choice.addEventListener('click', () => {
+            themeChoices.forEach(c => c.classList.remove('active'));
+            choice.classList.add('active');
+            if (choice.dataset.theme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
             }
         });
     });
@@ -103,8 +123,8 @@ window.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 throw new Error(result.error || 'An unknown error occurred.');
             }
-            currentUserId = result.userId; // Store the new user's ID
-            showScreen(screens.profileSetup); // Proceed to profile setup
+            currentUserId = result.userId;
+            showScreen(screens.profileSetup);
         } catch (error) {
             errorDivs.signup.textContent = error.message;
             errorDivs.signup.classList.remove('hidden');
@@ -114,15 +134,8 @@ window.addEventListener('DOMContentLoaded', () => {
     forms.profileSetup?.addEventListener('submit', async (event) => {
         event.preventDefault();
         errorDivs.profile.classList.add('hidden');
-
-        const formData = new FormData();
+        const formData = new FormData(forms.profileSetup);
         formData.append('userId', currentUserId);
-        formData.append('bio', forms.profileSetup.querySelector('#bio').value);
-
-        const photoFile = forms.profileSetup.querySelector('#photo-upload').files[0];
-        if (photoFile) {
-            formData.append('profilePhoto', photoFile);
-        }
 
         const activeInterests = forms.profileSetup.querySelectorAll('.interest-tag.active');
         activeInterests.forEach(tag => {
@@ -148,8 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
     forms.login?.addEventListener('submit', async (event) => {
         event.preventDefault();
         errorDivs.login.classList.add('hidden');
-        const email = forms.login.querySelector('#login-email').value;
-        const password = forms.login.querySelector('#login-password').value;
+        const { email, password } = Object.fromEntries(new FormData(event.target));
 
         if (!email || !password) {
             errorDivs.login.textContent = 'Email and password are required.';
@@ -167,7 +179,7 @@ window.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 throw new Error(result.error || 'An unknown error occurred.');
             }
-            showScreen(screens.homeFeed);
+            showScreen(screens.themePreview); // Go to Theme Preview on login
         } catch (error) {
             errorDivs.login.textContent = error.message;
             errorDivs.login.classList.remove('hidden');
